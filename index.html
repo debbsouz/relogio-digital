@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relógio Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cor-fundo: linear-gradient(135deg, #e0e0e0, #ffffff);
+      --cor-texto: #111;
+      --cor-btn: #111;
+      --cor-btn-texto: #fff;
+    }
+
+    body.escuro {
+      --cor-fundo: linear-gradient(135deg, #1c1c1c, #333);
+      --cor-texto: #f0f0f0;
+      --cor-btn: #f0f0f0;
+      --cor-btn-texto: #111;
+    }
+
+    body {
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      transition: all 0.5s ease;
+    }
+
+    #relogio {
+      font-size: 5rem;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      background-color: var(--cor-btn);
+      color: var(--cor-btn-texto);
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .icone {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+    <div id="relogio">00:00:00</div>
+    <button onclick="alternarTema()">
+        <span id="iconeTema" class="icone">🌙</span>Alternar tema
+    </button>
+
+<script>
+    function atualizarRelogio() {
+      const agora = new Date();
+      const horas = String(agora.getHours()).padStart(2, '0');
+      const minutos = String(agora.getMinutes()).padStart(2, '0');
+      const segundos = String(agora.getSeconds()).padStart(2, '0');
+      document.getElementById('relogio').textContent = `${horas}:${minutos}:${segundos}`;
+    }
+
+    function alternarTema() {
+      const body = document.body;
+      const usandoEscuro = body.classList.toggle('escuro');
+      localStorage.setItem('temaPreferido', usandoEscuro ? 'escuro' : 'claro');
+      atualizarIcone();
+    }
+
+    function atualizarIcone() {
+      const icone = document.getElementById('iconeTema');
+      const tema = document.body.classList.contains('escuro') ? 'escuro' : 'claro';
+      icone.textContent = tema === 'escuro' ? '☀️' : '🌙';
+    }
+
+    window.onload = () => {
+      const temaSalvo = localStorage.getItem('temaPreferido');
+      if (temaSalvo === 'escuro') {
+        document.body.classList.add('escuro');
+      }
+      atualizarIcone();
+      atualizarRelogio();
+      setInterval(atualizarRelogio, 1000);
+    };
+    </script>
+</body>
+</html>
